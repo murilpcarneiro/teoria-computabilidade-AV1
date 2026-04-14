@@ -8,8 +8,7 @@ Turmas: CC5MA / CC5NA – Semestre 01/2026
 ---
 
 ## Integrantes da Equipe
-> *(Adicionar nomes aqui antes da entrega)*
-
+Pedro Lyra, Murilo Pantoja, Vithor dos Santos, João Felipe Soares
 ---
 
 ## Função Implementada
