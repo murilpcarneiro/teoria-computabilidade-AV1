@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Rodar C: monolitico",
+      "type": "shell",
+      "command": ".\\fatorial_monolitico.exe",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar C: iterativo",
+      "type": "shell",
+      "command": ".\\fatorial_iterativo.exe",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar C: recursivo",
+      "type": "shell",
+      "command": ".\\fatorial_recursivo.exe",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar Python: maquina de tracos",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe .\\maquina_de_tracos.py",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar todos os codigos",
+      "dependsOn": [
+        "Rodar C: monolitico",
+        "Rodar C: iterativo",
+        "Rodar C: recursivo",
+        "Rodar Python: maquina de tracos"
+      ],
+      "dependsOrder": "sequence"
+    }
+  ]
+}

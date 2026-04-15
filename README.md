@@ -43,43 +43,72 @@ Pedro Lyra, Murilo Pantoja, Vithor dos Santos, João Felipe Soares
 ## Organização dos Arquivos
 
 ```
-trabalho-computabilidade/
-├── src/
-│   ├── fatorial_monolitico.c   ← programa monolítico (usa goto)
-│   ├── fatorial_iterativo.c    ← programa iterativo (usa for)
-│   ├── fatorial_recursivo.c    ← programa recursivo
-│   └── maquina_de_tracos.py   ← simulador da Máquina de Traços
+teoria-computabilidade-AV1/
+├── fatorial_monolitico.c     ← programa monolítico (usa goto)
+├── fatorial_iterativo.c      ← programa iterativo (usa for)
+├── fatorial_recursivo.c      ← programa recursivo
+├── fatorial_monolitico.exe   ← binário pronto para execução
+├── fatorial_iterativo.exe    ← binário pronto para execução
+├── fatorial_recursivo.exe    ← binário pronto para execução
+├── maquina_de_tracos.py      ← simulador da Máquina de Traços
 └── README.md
 ```
 
 ---
 
-## Instruções de Compilação e Execução
+## Instruções de Execução (sem GCC)
 
 ### Pré-requisitos
-- GCC (qualquer versão moderna)
 - Python 3.6+
 
-### Compilar os programas C
+### Executar os programas C (binários prontos)
 
 ```bash
-gcc src/fatorial_monolitico.c -o fatorial_monolitico
-gcc src/fatorial_iterativo.c  -o fatorial_iterativo
-gcc src/fatorial_recursivo.c  -o fatorial_recursivo
+./fatorial_monolitico.exe
+./fatorial_iterativo.exe
+./fatorial_recursivo.exe
 ```
 
-### Executar os programas C
+No Windows PowerShell:
 
 ```bash
-./fatorial_monolitico   # solicita n e imprime n!
-./fatorial_iterativo
-./fatorial_recursivo
+.\fatorial_monolitico.exe
+.\fatorial_iterativo.exe
+.\fatorial_recursivo.exe
 ```
 
 ### Executar a Máquina de Traços
 
 ```bash
-python3 src/maquina_de_tracos.py
+python maquina_de_tracos.py
+```
+
+No Windows PowerShell (com ambiente virtual local):
+
+```bash
+.\.venv\Scripts\python.exe .\maquina_de_tracos.py
+```
+
+### Executar pelo VS Code (Tasks)
+
+Se o projeto tiver o arquivo `.vscode/tasks.json`, use:
+
+1. `Terminal > Run Task`
+2. Escolha uma das tarefas:
+	- `Rodar C: monolitico`
+	- `Rodar C: iterativo`
+	- `Rodar C: recursivo`
+	- `Rodar Python: maquina de tracos`
+	- `Rodar todos os codigos`
+
+### Compilação (opcional)
+
+Se você instalar GCC no futuro, pode recompilar com:
+
+```bash
+gcc fatorial_monolitico.c -o fatorial_monolitico.exe
+gcc fatorial_iterativo.c  -o fatorial_iterativo.exe
+gcc fatorial_recursivo.c  -o fatorial_recursivo.exe
 ```
 
 A Máquina de Traços gera:
