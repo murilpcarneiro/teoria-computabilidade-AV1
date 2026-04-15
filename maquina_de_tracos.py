@@ -159,6 +159,107 @@ def trace_iterativo_bugado(n):
 
 
 # ─────────────────────────────────────────────
+#  NORMALIZAÇÃO DE TRAÇOS (ANÁLISE FORMAL)
+# ─────────────────────────────────────────────
+
+def extrair_passos_formais_monolitico(n):
+    """
+    Gera uma sequência de passos abstratos para o monolítico.
+    Cada passo é uma tupla (operação, i, resultado).
+    """
+    passos = []
+
+    if n < 0:
+        passos.append(("erro_entrada", None, None))
+        return passos
+
+    resultado = 1
+    i = 1
+    passos.append(("init", i, resultado))
+
+    while True:
+        passos.append(("teste", i, resultado))
+        if i > n:
+            passos.append(("saida", i, resultado))
+            break
+        resultado *= i
+        passos.append(("multiplica", i, resultado))
+        i += 1
+
+    return passos
+
+
+def extrair_passos_formais_iterativo(n, iniciar_em_zero=False):
+    """
+    Gera sequência de passos abstratos para o iterativo.
+    iniciar_em_zero=True reproduz a versão bugada.
+    """
+    passos = []
+
+    if n < 0:
+        passos.append(("erro_entrada", None, None))
+        return passos
+
+    resultado = 1
+    i = 0 if iniciar_em_zero else 1
+    passos.append(("init", i, resultado))
+
+    while True:
+        passos.append(("teste", i, resultado))
+        if i > n:
+            passos.append(("saida", i, resultado))
+            break
+        resultado *= i
+        passos.append(("multiplica", i, resultado))
+        i += 1
+
+    return passos
+
+
+def comparar_passos_formais(label_a, passos_a, label_b, passos_b):
+    """
+    Compara duas cadeias formais passo a passo.
+    Retorna (equivalente, indice_primeira_divergencia).
+    """
+    limite = min(len(passos_a), len(passos_b))
+    for idx in range(limite):
+        if passos_a[idx] != passos_b[idx]:
+            return False, idx
+
+    if len(passos_a) != len(passos_b):
+        return False, limite
+
+    return True, None
+
+
+def exibir_analise_formal(n, label_a, passos_a, label_b, passos_b):
+    print(f"\n{'='*60}")
+    print(f"  ANÁLISE FORMAL POR PASSOS – entrada n={n}")
+    print(f"{'='*60}")
+    print(f"\nCadeia formal {label_a} (passo, operação, i, resultado):")
+    for idx, (op, i, r) in enumerate(passos_a, start=1):
+        print(f"  {idx:02d}. ({op}, {i}, {r})")
+
+    print(f"\nCadeia formal {label_b} (passo, operação, i, resultado):")
+    for idx, (op, i, r) in enumerate(passos_b, start=1):
+        print(f"  {idx:02d}. ({op}, {i}, {r})")
+
+    equivalente, divergencia = comparar_passos_formais(label_a, passos_a, label_b, passos_b)
+    if equivalente:
+        print("\n✅ PROVA FORMAL: cadeias idênticas passo a passo.")
+        print("   Conclusão: equivalência forte para a entrada analisada.")
+        return
+
+    print("\n❌ PROVA FORMAL: as cadeias divergem.")
+    print(f"   Primeira divergência no passo {divergencia + 1}.")
+
+    passo_a = passos_a[divergencia] if divergencia < len(passos_a) else "<sem passo>"
+    passo_b = passos_b[divergencia] if divergencia < len(passos_b) else "<sem passo>"
+    print(f"   {label_a}: {passo_a}")
+    print(f"   {label_b}: {passo_b}")
+
+
+# ─────────────────────────────────────────────
 #  EXECUÇÃO PRINCIPAL
 # ─────────────────────────────────────────────
 
@@ -197,6 +298,12 @@ if __name__ == "__main__":
         "Monolítico", trace_m, res_m,
         "Iterativo",  trace_i, res_i)
 
+    passos_m = extrair_passos_formais_monolitico(N)
+    passos_i = extrair_passos_formais_iterativo(N)
+    exibir_analise_formal(N,
+        "Monolítico", passos_m,
+        "Iterativo",  passos_i)
+
     # ── CASO 2: NÃO-EQUIVALÊNCIA (iterativo vs iterativo bugado)
     trace_bug, res_bug = trace_iterativo_bugado(N)
     print(f"\n\n{'═'*60}")
@@ -206,6 +313,11 @@ if __name__ == "__main__":
     comparar_traces(N,
         "Iterativo Correto", trace_i, res_i,
         "Iterativo Bugado",  trace_bug, res_bug)
+
+    passos_ib = extrair_passos_formais_iterativo(N, iniciar_em_zero=True)
+    exibir_analise_formal(N,
+        "Iterativo Correto", passos_i,
+        "Iterativo Bugado",  passos_ib)
 
     print(f"\n{'─'*60}")
     print("  TABELA RESUMO DE EXECUÇÕES")
